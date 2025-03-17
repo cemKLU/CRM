@@ -1,25 +1,35 @@
 public class CampaignSelection {
 
+    // Pazarlama kampanyalarının bütçe kısıtları altında maksimum ROI'yi bulma fonksiyonu
     public static int maxROI(int[] costs, int[] returns, int budget, int n) {
+        // Dinamik programlama için iki boyutlu bir dizi oluşturuyoruz
         int[][] dp = new int[n + 1][budget + 1];
 
+        // Her kampanya ve bütçe için döngü
         for (int i = 1; i <= n; i++) {
             for (int w = 1; w <= budget; w++) {
+                // Eğer kampanya maliyeti mevcut bütçeyi aşmıyorsa
                 if (costs[i - 1] <= w) {
+                    // Maksimum getiri hesaplanıyor: kampanya eklenirse veya eklenmezse
                     dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - costs[i - 1]] + returns[i - 1]);
                 } else {
+                    // Kampanya maliyeti bütçeyi aşarsa, önceki durumu koruyoruz
                     dp[i][w] = dp[i - 1][w];
                 }
             }
         }
+        // Sonuç olarak, maksimum ROI değeri döndürülüyor
         return dp[n][budget];
     }
 
     public static void main(String[] args) {
-        int[] costs = {3, 2, 4};
-        int[] returns = {5, 6, 8};
-        int budget = 5;
+        // Test verileri: kampanya maliyetleri ve getirileri
+        int[] costs = {3, 2, 4}; // Kampanyaların maliyetleri
+        int[] returns = {5, 6, 8}; // Kampanyaların getirileri
+        int budget = 5; // Toplam bütçe
+
+        // Algoritmayı çalıştırıyoruz ve sonucu yazdırıyoruz
         int result = maxROI(costs, returns, budget, costs.length);
-        System.out.println("Maximum ROI: " + result);
+        System.out.println("Maksimum ROI: " + result); // Çıktı
     }
 }
