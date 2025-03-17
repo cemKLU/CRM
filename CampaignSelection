@@ -1,0 +1,25 @@
+public class CampaignSelection {
+
+    public static int maxROI(int[] costs, int[] returns, int budget, int n) {
+        int[][] dp = new int[n + 1][budget + 1];
+
+        for (int i = 1; i <= n; i++) {
+            for (int w = 1; w <= budget; w++) {
+                if (costs[i - 1] <= w) {
+                    dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - costs[i - 1]] + returns[i - 1]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+        return dp[n][budget];
+    }
+
+    public static void main(String[] args) {
+        int[] costs = {3, 2, 4};
+        int[] returns = {5, 6, 8};
+        int budget = 5;
+        int result = maxROI(costs, returns, budget, costs.length);
+        System.out.println("Maximum ROI: " + result);
+    }
+}
