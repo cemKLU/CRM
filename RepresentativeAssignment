@@ -2,25 +2,35 @@ import java.util.*;
 
 public class RepresentativeAssignment {
 
+    // Müşteri taleplerini ve temsilci uygunluklarını optimize eden fonksiyon
     public static int assignRepresentatives(int[] requests, int[] availability, int n, int m) {
+        // Dinamik programlama için iki boyutlu bir dizi oluşturuyoruz
         int[][] dp = new int[n + 1][m + 1];
 
+        // Her müşteri ve temsilci için döngü
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
+                // Eğer temsilci uygunluğu müşterinin talebini karşılıyorsa
                 if (availability[j - 1] >= requests[i - 1]) {
+                    // Maksimum değer hesaplanıyor: önceki duruma eklenen talepler veya bir önceki durum
                     dp[i][j] = Math.max(dp[i - 1][j - 1] + requests[i - 1], dp[i][j - 1]);
                 } else {
+                    // Eğer uygunluk yeterli değilse, önceki durumu koruyoruz
                     dp[i][j] = dp[i][j - 1];
                 }
             }
         }
+        // Sonuç olarak, maksimum optimizasyon değeri döndürülüyor
         return dp[n][m];
     }
 
     public static void main(String[] args) {
-        int[] requests = {3, 5, 7};
-        int[] availability = {4, 6, 8};
+        // Test verileri: müşteri talepleri ve temsilci uygunlukları
+        int[] requests = {3, 5, 7}; // Müşteri talepleri
+        int[] availability = {4, 6, 8}; // Temsilci uygunlukları
+
+        // Algoritmayı çalıştırıyoruz ve sonucu yazdırıyoruz
         int result = assignRepresentatives(requests, availability, requests.length, availability.length);
-        System.out.println("Maximum optimization: " + result);
+        System.out.println("Maksimum optimizasyon: " + result); // Çıktı
     }
 }
